@@ -1,12 +1,10 @@
 /*
  * Create a list that holds all of your cards
  */
-//let cards = new Array(document.querySelectorAll
-//('.fa-diamond, .fa-paper-plane-o, .fa-anchor, .fa-bolt, .fa-cube, .fa-leaf, .fa-bicycle, .fa-bomb'));
 let card =document.getElementsByClassName('card');//Creates an HTML Collection of the li elements.
-const cards= [...card];//creates an array therefrom.
-let deck = document.querySelectorAll('.deck li');//a nodelist of the deck nodes.
-const decklis=[...deck];
+const cards= Array.from(card);//creates an array therefrom.
+let deck = document.querySelector('.deck');//a variable holding the <ul> element.
+
 
 /*
  * Display the cards on the page
@@ -14,16 +12,14 @@ const decklis=[...deck];
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-function start() {
-
-  let shuffledcards = shuffle(cards);
-  //console.log(card);
-  console.log(cards);
-  console.log(deck);
-  deck.innerHTML="";
-  for (let i=0; i<shuffledcards.length ; i++)
+function start()
+{
+  let newcards = shuffle(cards);
+  deck.innerHTML=""; //remove existing <li> elements from ul.
+  for (let i=0; i<newcards.length ; i++) //insert the shuffle cards.
  {
-   deck.append(shuffledcards[i]);
+   deck.appendChild(newcards[i]);//append the <li> elements one by one.
+   newcards[i].classList.remove('show', 'open', 'match');
 
   }
 }
