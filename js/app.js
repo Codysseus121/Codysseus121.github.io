@@ -19,8 +19,7 @@ function start()
   for (let i=0; i<newcards.length ; i++) //insert the shuffle cards.
  {
    deck.appendChild(newcards[i]);//append the <li> elements one by one.
-   newcards[i].classList.remove('show', 'open', 'match');
-
+   newcards[i].classList.remove('show', 'open', 'match');//reset the board.
   }
 }
 

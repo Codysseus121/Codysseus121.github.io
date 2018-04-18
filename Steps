@@ -1,0 +1,5 @@
+1. Setup event listeners
+2. If user clicks a card->show cards
+3. If this another card is already open->compare.
+4. if they match, leave open.
+5. Else, close.
