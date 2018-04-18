@@ -4,6 +4,7 @@
 let card = document.getElementsByClassName('card'); //Creates an HTML Collection of the li elements.
 const cards = Array.from(card); //creates an array therefrom.
 let deck = document.querySelector('.deck'); //a variable holding the <ul> element.
+const matches = new Array(); //an array to hold all matches found.
 
 
 /*
@@ -25,12 +26,12 @@ function start() {
 function openCard(evt) // a function to show the card once clicked.
 {
   if (evt.target.nodeName === 'LI')
-  evt.target.classList.add("open", "show");
+  evt.target.classList.add("open", "show");//done
 
 
 }
 
-function clickcard() //event listener for click
+function clickcard() //event listener for click.
 {
   deck.addEventListener('click', openCard);
 }
