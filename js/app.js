@@ -6,6 +6,9 @@ const cards = Array.from(card); //creates an array therefrom.
 let deck = document.querySelector('.deck'); //a variable holding the <ul> element.
 const matches = new Array(); //an array to hold all matches found.
 let count=0;//counting no of open unmatched cards.
+let movesCounter=document.querySelector('.moves').innerHTML;
+let noOfMoves=0;
+movesCounter=noOfMoves;
 
 
 
@@ -16,6 +19,7 @@ let count=0;//counting no of open unmatched cards.
  *   - add each card's HTML to the page
  */
 function start() {
+  noOfMoves=0;//reset number of moves.
   let newcards = shuffle(cards);
   deck.innerHTML = ""; //remove existing <li> elements from ul.
   for (let i = 0; i < newcards.length; i++) //insert the shuffle cards.
@@ -29,12 +33,15 @@ function openCard(evt) // a function to show the card once clicked.
 {
 
   let cardtemp=evt.target;
+  if (cardtemp.classList!="card match" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
+  {
+  cardtemp.classList="card open show";//done
   matches.push(cardtemp);//push first card onto the stack.
-  evt.target.classList.add("open", "show");//done
-  count++;
-  if (count==2)
-  match();
-
+  count++;//increment counter
+  if (count==2)//check to see if they match.
+  {noOfMoves++;
+  match();}
+}
 }
 
 
@@ -43,24 +50,23 @@ function clickcard() //event listener for click.
   deck.addEventListener('click', openCard);
 }
 
-function removeclass()
-{
-  classList.remove("open", "show");
-}
 
 function match()
 {
   count=0;
   let temp1=matches.pop();
   let temp2=matches.pop();
-  console.log(temp1.innerHTML);
-  console.log(temp2.innerHTML);
   if (temp1.innerHTML != temp2.innerHTML)
   {
   setTimeout (function remove() {
   temp1.classList.remove("open", "show");
-  temp2.classList.remove("open", "show");}, 1000);
+  temp2.classList.remove("open", "show");}, 700);
 }
+  else
+  {
+    temp1.classList="card match";
+    temp2.classList="card match";
+  }
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
