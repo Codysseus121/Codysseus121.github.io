@@ -5,6 +5,8 @@ let card = document.getElementsByClassName('card'); //Creates an HTML Collection
 const cards = Array.from(card); //creates an array therefrom.
 let deck = document.querySelector('.deck'); //a variable holding the <ul> element.
 const matches = new Array(); //an array to hold all matches found.
+let count=0;//counting no of open unmatched cards.
+
 
 
 /*
@@ -25,17 +27,35 @@ function start() {
 
 function openCard(evt) // a function to show the card once clicked.
 {
-  if (evt.target.nodeName === 'LI')
-  evt.target.classList.add("open", "show");//done
 
+  let cardtemp=evt.target;
+  matches.push(cardtemp);//push first card onto the stack.
+  evt.target.classList.add("open", "show");//done
+  count++;
+  if (count==2)
+  match();
 
 }
+
 
 function clickcard() //event listener for click.
 {
   deck.addEventListener('click', openCard);
 }
 
+function match()
+{
+  count=0;
+  let temp1=matches.pop();
+  let temp2=matches.pop();
+  console.log(temp1.innerHTML);
+  console.log(temp2.innerHTML);
+  if (temp1.innerHTML != temp2.innerHTML)
+  {
+  temp1.classList.remove("open", "show");
+  temp2.classList.remove("open", "show");
+  }
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
