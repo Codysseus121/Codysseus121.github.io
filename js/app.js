@@ -43,6 +43,11 @@ function clickcard() //event listener for click.
   deck.addEventListener('click', openCard);
 }
 
+function removeclass()
+{
+  classList.remove("open", "show");
+}
+
 function match()
 {
   count=0;
@@ -52,9 +57,10 @@ function match()
   console.log(temp2.innerHTML);
   if (temp1.innerHTML != temp2.innerHTML)
   {
+  setTimeout (function remove() {
   temp1.classList.remove("open", "show");
-  temp2.classList.remove("open", "show");
-  }
+  temp2.classList.remove("open", "show");}, 1000);
+}
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
