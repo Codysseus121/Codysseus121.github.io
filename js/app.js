@@ -9,6 +9,8 @@ let count=0;//counting no of open unmatched cards.
 let movesCounter=document.querySelector('.moves');
 let noOfMoves=0;
 movesCounter.innerHTML=noOfMoves;
+let starrating = document.querySelector('.stars').children;
+
 
 
 
@@ -33,7 +35,7 @@ function openCard(evt) // a function to show the card once clicked.
 {
 
   let cardtemp=evt.target;
-  if (cardtemp.classList!="card match" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
+  if (cardtemp.classList!="card match" && cardtemp.classList!="card open show" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
   {
   cardtemp.classList="card open show";//done
   matches.push(cardtemp);//push first card onto the stack.
@@ -42,6 +44,7 @@ function openCard(evt) // a function to show the card once clicked.
   {
   incrementMoves();
   match();
+  stars();
 }
 }
 }
@@ -75,6 +78,23 @@ function match()
     temp1.classList="card match";
     temp2.classList="card match";
   }
+}
+
+function stars()
+{
+  if (noOfMoves==10)
+  {
+    let starone = starrating[0];
+    starone.style.display="none";
+  }
+
+  else if (noOfMoves==20)
+  {
+    let startwo = starrating[1];
+    startwo.style.display="none";
+  }
+
+
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
