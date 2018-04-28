@@ -6,9 +6,9 @@ const cards = Array.from(card); //creates an array therefrom.
 let deck = document.querySelector('.deck'); //a variable holding the <ul> element.
 const matches = new Array(); //an array to hold all matches found.
 let count=0;//counting no of open unmatched cards.
-let movesCounter=document.querySelector('.moves').innerHTML;
+let movesCounter=document.querySelector('.moves');
 let noOfMoves=0;
-movesCounter=noOfMoves;
+movesCounter.innerHTML=noOfMoves;
 
 
 
@@ -39,11 +39,19 @@ function openCard(evt) // a function to show the card once clicked.
   matches.push(cardtemp);//push first card onto the stack.
   count++;//increment counter
   if (count==2)//check to see if they match.
-  {noOfMoves++;
-  match();}
+  {
+  incrementMoves();
+  match();
+}
 }
 }
 
+function incrementMoves()
+{
+  noOfMoves++;
+  movesCounter.innerHTML=noOfMoves;
+
+}
 
 function clickcard() //event listener for click.
 {
