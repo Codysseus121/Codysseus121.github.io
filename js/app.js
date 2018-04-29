@@ -10,9 +10,37 @@ let movesCounter=document.querySelector('.moves');
 let noOfMoves=0;
 movesCounter.innerHTML=noOfMoves;
 let starrating = document.querySelector('.stars').children;
+let time;
 
 
 
+function timer() //timer function
+{
+  let minutes = document.getElementById("minutes");
+  let seconds = document.getElementById("seconds");
+  let now = new Date().getTime(), secs=0, mins=0, clocksecs=0;
+
+setInterval(function(){
+
+  time = new Date().getTime() - now;//accurately calculate time in milliseconds.
+  clocksecs = Math.floor(time / 1000);
+  secs=clocksecs%60;//reset seconds every minute
+  mins = Math.floor(clocksecs/60);
+
+        let min = Ticking(mins);//format minutes
+        let sec = Ticking(secs);//format seconds
+
+        minutes.innerHTML = min;
+        seconds.innerHTML = ":" + sec;
+      }, 1000);
+}
+
+function Ticking(ticVal)//a function for formatting minutes & seconds
+{
+    if (ticVal < 10)
+    {ticVal = "0" + ticVal;}
+    return ticVal;
+}
 
 /*
  * Display the cards on the page
@@ -80,7 +108,7 @@ function match()
   }
 }
 
-function stars()
+function stars() //a function the change the star rating after a number of moves.
 {
   if (noOfMoves==10)
   {
@@ -93,7 +121,6 @@ function stars()
     let startwo = starrating[1];
     startwo.style.display="none";
   }
-
 
 }
 
@@ -112,15 +139,3 @@ function shuffle(array) {
 
   return array;
 }
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
