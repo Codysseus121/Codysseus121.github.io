@@ -1,27 +1,29 @@
 /*
- * Create a list that holds all of your cards
+ * Initialization of global variables
  */
 let card = document.getElementsByClassName('card'); //Creates an HTML Collection of the li elements.
 const cards = Array.from(card); //creates an array therefrom.
 let deck = document.querySelector('.deck'); //a variable holding the <ul> element.
 const matches = new Array(); //an array to hold all matches found.
 let count=0;//counting no of open unmatched cards.
-let movesCounter=document.querySelector('.moves');
-let noOfMoves=0;
+let movesCounter=document.querySelector('.moves');//the number of moves elements
+let noOfMoves=0;//moves count
 movesCounter.innerHTML=noOfMoves;
-let starrating = document.querySelector('.stars');
-let restartbutton = document.querySelector('.restart');
+let starrating = document.querySelector('.stars');//the stars element
+let restartbutton = document.querySelector('.restart');//the restart button
 let finalstars=3;
 let matchedmoves=0;
-let completed=false;
 let clicked=0;
 let interval;
 let minutes = document.getElementById("minutes");//timer variables
 let seconds = document.getElementById("seconds");
 let now = 0, time=0, secs=0, mins=0, clocksecs=0;
+let modal = document.querySelector('.modal-content');
+let modalstatistics = document.querySelector('.statistics');
 
-if (matchedmoves==8)
+let completed = function()
 {
+if (matchedmoves==8)
 gameover();
 }
 
@@ -66,8 +68,7 @@ function Ticking(value)//a function for formatting minutes & seconds
  */
 function start() {
 
-  //clicked=0;
-
+  modal.style.display = "none";
   now = new Date().getTime();
   noOfMoves=0;//reset number of moves.
   movesCounter.innerHTML=noOfMoves;
@@ -133,7 +134,9 @@ function match()
   {
     temp1.classList="card match";
     temp2.classList="card match";
-    matchedmoves++;
+    ++matchedmoves;
+    if (matchedmoves===8)
+    gameover();
 
   }
 }
@@ -141,9 +144,11 @@ function match()
 function gameover()
 {
   clearInterval(interval);//stop the timer
-  deck.removeEventListener('click', openCard);
-  alert("You completed the game in " + time + "and "+finalstars+" stars. Click anywhere to continue.")
-  window.addEventListener('click', start);
+  //deck.removeEventListener('click', openCard);
+  modal.style.display="";
+  statistics.textContent =
+  "You completed the game in " + mins + " minutes," + " " + secs +" seconds" + " with " + finalstars + " stars left.";
+  //deck.addEventListener('click', start);
 }
 
 function stars() //a function the change the star rating after a number of moves.
@@ -169,6 +174,7 @@ function reset()
   clearInterval(interval);//stop & reset the timer
   time=0;
   clicked=0;
+  matchedmoves=0;
   minutes.textContent = "00"; //show in HTML
   seconds.textContent = ":" + "00";
   start();
