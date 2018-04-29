@@ -10,36 +10,47 @@ let movesCounter=document.querySelector('.moves');
 let noOfMoves=0;
 movesCounter.innerHTML=noOfMoves;
 let starrating = document.querySelector('.stars').children;
-let time;
+let restartbutton = document.querySelector('.fa fa-repeat');
+let finalstars=3;
+let matchedmoves=0;
+let completed=false;
+let clicked=0;
+let interval;
+let minutes = document.getElementById("minutes");//timer variables
+let seconds = document.getElementById("seconds");
+let now = 0, time=0, secs=0, mins=0, clocksecs=0;
 
+window.onload = function() //let the game begin!
+{
+   start();
+
+}
 
 
 function timer() //timer function
 {
-  let minutes = document.getElementById("minutes");
-  let seconds = document.getElementById("seconds");
-  let now = new Date().getTime(), secs=0, mins=0, clocksecs=0;
 
-setInterval(function(){
-
+  interval= setInterval(function()
+  {
   time = new Date().getTime() - now;//accurately calculate time in milliseconds.
-  clocksecs = Math.floor(time / 1000);
+  clocksecs = Math.floor(time / 1000);//calculate seconds.
   secs=clocksecs%60;//reset seconds every minute
-  mins = Math.floor(clocksecs/60);
+  mins = Math.floor(clocksecs/60);//calculate minutes
 
         let min = Ticking(mins);//format minutes
         let sec = Ticking(secs);//format seconds
 
-        minutes.innerHTML = min;
-        seconds.innerHTML = ":" + sec;
+        minutes.textContent = min; //show in HTML
+        seconds.textContent = ":" + sec;
       }, 1000);
-}
+    }
 
-function Ticking(ticVal)//a function for formatting minutes & seconds
+
+function Ticking(value)//a function for formatting minutes & seconds
 {
-    if (ticVal < 10)
-    {ticVal = "0" + ticVal;}
-    return ticVal;
+    if (value < 10)
+    {value = "0" + value;}
+    return value;
 }
 
 /*
@@ -49,6 +60,8 @@ function Ticking(ticVal)//a function for formatting minutes & seconds
  *   - add each card's HTML to the page
  */
 function start() {
+
+  now = new Date().getTime();
   noOfMoves=0;//reset number of moves.
   let newcards = shuffle(cards);
   deck.innerHTML = ""; //remove existing <li> elements from ul.
@@ -57,15 +70,21 @@ function start() {
     deck.appendChild(newcards[i]); //append the <li> elements one by one.
     newcards[i].classList.remove('show', 'open', 'match'); //reset the board.
   }
-}
+  clickcard();
+   
+  }
 
 function openCard(evt) // a function to show the card once clicked.
 {
 
+  clicked++;
+  if (clicked==1)
+  timer();
   let cardtemp=evt.target;
+  console.log(cardtemp);
   if (cardtemp.classList!="card match" && cardtemp.classList!="card open show" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
   {
-  cardtemp.classList="card open show";//done
+  cardtemp.classList +=" open show";//done
   matches.push(cardtemp);//push first card onto the stack.
   count++;//increment counter
   if (count==2)//check to see if they match.
@@ -73,7 +92,7 @@ function openCard(evt) // a function to show the card once clicked.
   incrementMoves();
   match();
   stars();
-}
+  }
 }
 }
 
@@ -87,6 +106,7 @@ function incrementMoves()
 function clickcard() //event listener for click.
 {
   deck.addEventListener('click', openCard);
+
 }
 
 
@@ -105,7 +125,19 @@ function match()
   {
     temp1.classList="card match";
     temp2.classList="card match";
+    matchedmoves++;
+    if (matchedmoves==8)
+    completed=true;
+    gameover();
   }
+}
+
+function gameover()
+{
+  clearInterval(interval);//stop the timer
+  deck.removeEventListener('click', openCard);
+  alert("You completed the game in " + time + "and "+finalstars+" stars. Click anywhere to continue.")
+  window.addEventListener('click', start);
 }
 
 function stars() //a function the change the star rating after a number of moves.
@@ -114,14 +146,21 @@ function stars() //a function the change the star rating after a number of moves
   {
     let starone = starrating[0];
     starone.style.display="none";
-  }
+    finalstars=2;
+    }
 
   else if (noOfMoves==20)
   {
     let startwo = starrating[1];
     startwo.style.display="none";
+    finalstars=1
   }
+  return finalstars;
+}
 
+function restart()
+{
+  restartbutton.addEventListener('click', start);
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976

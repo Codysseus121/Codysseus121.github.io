@@ -33,10 +33,15 @@ h1 {
     font-weight: 300;
 }
 
-#timer
+#minutes
 {
-padding-left: 30px;
+padding-left: 40px;
 }
+#seconds{
+  padding-left:0;
+}
+
+
 /*
  * Styles for the deck of cards
  */
