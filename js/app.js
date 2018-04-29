@@ -10,6 +10,7 @@ let movesCounter=document.querySelector('.moves');//the number of moves elements
 let noOfMoves=0;//moves count
 movesCounter.innerHTML=noOfMoves;
 let starrating = document.querySelector('.stars');//the stars element
+let allstars = starrating.querySelector('li');
 let restartbutton = document.querySelector('.restart');//the restart button
 let finalstars=3;
 let matchedmoves=0;
@@ -18,19 +19,14 @@ let interval;
 let minutes = document.getElementById("minutes");//timer variables
 let seconds = document.getElementById("seconds");
 let now = 0, time=0, secs=0, mins=0, clocksecs=0;
-let modal = document.querySelector('.modal-content');
+let modal = document.querySelector('.modal-content');//modal setup
+modal.style.display = 'none';
 let modalstatistics = document.querySelector('.statistics');
 
-let completed = function()
-{
-if (matchedmoves==8)
-gameover();
-}
 
-window.onload = function() //let the game begin!
+window.onload = function() //let the games begin!
 {
    start();
-
 }
 
 
@@ -60,29 +56,32 @@ function Ticking(value)//a function for formatting minutes & seconds
     return value;
 }
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-function start() {
 
-  modal.style.display = "none";
-  now = new Date().getTime();
-  noOfMoves=0;//reset number of moves.
-  movesCounter.innerHTML=noOfMoves;
-  starrating.style.display = "";
-  let newcards = shuffle(cards);
+function start() //the core function of the game
+{
+
+  modal.style.display = "none";//hide modal
+  now = new Date().getTime();//reset date-time object.
+  noOfMoves = 0; //reset number of moves.
+  movesCounter.innerHTML = noOfMoves; //insert no of moves
+  showstars();
+  let newcards = shuffle(cards); // shuffle the cards
   deck.innerHTML = ""; //remove existing <li> elements from ul.
-  for (let i = 0; i < newcards.length; i++) //insert the shuffle cards.
+  for (let i = 0; i < newcards.length; i++) //insert the shuffled cards.
   {
     deck.appendChild(newcards[i]); //append the <li> elements one by one.
     newcards[i].classList.remove('show', 'open', 'match'); //reset the board.
   }
-  clickcard();
-  restart();
+  clickcard(); //the event listener function.
+  restart(); //the restart event listener.
   }
+
+  function clickcard() //event listener for click.
+  {
+    deck.addEventListener('click', openCard);
+
+  }
+
 
 function openCard(evt) // a function to show the card once clicked.
 {
@@ -92,15 +91,14 @@ function openCard(evt) // a function to show the card once clicked.
   let cardtemp=evt.target;
   if (cardtemp.classList!="card match" && cardtemp.classList!="card open show" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
   {
-  cardtemp.classList +=" open show";//done
+  cardtemp.classList +=" open show";
   matches.push(cardtemp);//push first card onto the stack.
   count++;//increment counter
   if (count==2)//check to see if they match.
   {
   incrementMoves();
-  match();
-  stars();
-
+  match(); //check if it's a match.
+  stars(); //check the star rating.
   }
 }
 }
@@ -112,14 +110,7 @@ function incrementMoves()//a function to display the number of moves. Two clicks
 
 }
 
-function clickcard() //event listener for click.
-{
-  deck.addEventListener('click', openCard);
-
-}
-
-
-function match()
+function match() //the card matching function
 {
   count=0;
   let temp1=matches.pop();
@@ -134,42 +125,59 @@ function match()
   {
     temp1.classList="card match";
     temp2.classList="card match";
-    ++matchedmoves;
-    if (matchedmoves===8)
-    gameover();
+    ++matchedmoves;//increment the number of matched pairs.
+    completed();//check if all cards have been matched.
 
   }
 }
 
-function gameover()
+function completed() //call game over function when all cards have been matched.
 {
-  clearInterval(interval);//stop the timer
-  //deck.removeEventListener('click', openCard);
-  modal.style.display="";
-  statistics.textContent =
-  "You completed the game in " + mins + " minutes," + " " + secs +" seconds" + " with " + finalstars + " stars left.";
-  //deck.addEventListener('click', start);
+if (matchedmoves==8)
+gameover();
 }
 
-function stars() //a function the change the star rating after a number of moves.
+function gameover() //the gameover function to stop the timer and show the modal.
+{
+  clearInterval(interval);//stop the timer
+  modal.style.display="";//show the modal
+  statistics.textContent =
+  "You completed the game in " + mins + " minutes," + " " + secs +" seconds" + " with " + finalstars + " stars left.";
+  window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+    reset();
+      }
+};
+}
+
+function showstars()
+{
+  for (i=0 ; i<3 ; i++)
+  {
+    starrating.children[i].style.visibility="visible";
+  }
+}
+
+function stars() //a function to change the star rating after a number of moves.
 {
   if (noOfMoves==10)
   {
     let starone = starrating.children[0];
-    starone.style.display="none";
+    starone.style.visibility="hidden";
     finalstars=2;
     }
 
   else if (noOfMoves==20)
   {
     let startwo = starrating.children[1];
-    startwo.style.display="none";
+    startwo.style.visibility="hidden";
     finalstars=1
   }
   return finalstars;
 }
 
-function reset()
+function reset() //a function to reset the timer and restart the game.
 {
   clearInterval(interval);//stop & reset the timer
   time=0;
@@ -181,7 +189,7 @@ function reset()
 
 }
 
-function restart()
+function restart() //event listener for reset
 {
 
   restartbutton.addEventListener('click', reset);
