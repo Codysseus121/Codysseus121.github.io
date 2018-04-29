@@ -9,8 +9,8 @@ let count=0;//counting no of open unmatched cards.
 let movesCounter=document.querySelector('.moves');
 let noOfMoves=0;
 movesCounter.innerHTML=noOfMoves;
-let starrating = document.querySelector('.stars').children;
-let restartbutton = document.querySelector('.fa fa-repeat');
+let starrating = document.querySelector('.stars');
+let restartbutton = document.querySelector('.restart');
 let finalstars=3;
 let matchedmoves=0;
 let completed=false;
@@ -19,6 +19,11 @@ let interval;
 let minutes = document.getElementById("minutes");//timer variables
 let seconds = document.getElementById("seconds");
 let now = 0, time=0, secs=0, mins=0, clocksecs=0;
+
+if (matchedmoves==8)
+{
+gameover();
+}
 
 window.onload = function() //let the game begin!
 {
@@ -61,8 +66,12 @@ function Ticking(value)//a function for formatting minutes & seconds
  */
 function start() {
 
+  //clicked=0;
+
   now = new Date().getTime();
   noOfMoves=0;//reset number of moves.
+  movesCounter.innerHTML=noOfMoves;
+  starrating.style.display = "";
   let newcards = shuffle(cards);
   deck.innerHTML = ""; //remove existing <li> elements from ul.
   for (let i = 0; i < newcards.length; i++) //insert the shuffle cards.
@@ -71,17 +80,15 @@ function start() {
     newcards[i].classList.remove('show', 'open', 'match'); //reset the board.
   }
   clickcard();
-   
+  restart();
   }
 
 function openCard(evt) // a function to show the card once clicked.
 {
-
-  clicked++;
+  clicked++;//this sets-off the timer on the first click
   if (clicked==1)
   timer();
   let cardtemp=evt.target;
-  console.log(cardtemp);
   if (cardtemp.classList!="card match" && cardtemp.classList!="card open show" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
   {
   cardtemp.classList +=" open show";//done
@@ -92,11 +99,12 @@ function openCard(evt) // a function to show the card once clicked.
   incrementMoves();
   match();
   stars();
+
   }
 }
 }
 
-function incrementMoves()
+function incrementMoves()//a function to display the number of moves. Two clicks count as one move.
 {
   noOfMoves++;
   movesCounter.innerHTML=noOfMoves;
@@ -126,9 +134,7 @@ function match()
     temp1.classList="card match";
     temp2.classList="card match";
     matchedmoves++;
-    if (matchedmoves==8)
-    completed=true;
-    gameover();
+
   }
 }
 
@@ -144,23 +150,35 @@ function stars() //a function the change the star rating after a number of moves
 {
   if (noOfMoves==10)
   {
-    let starone = starrating[0];
+    let starone = starrating.children[0];
     starone.style.display="none";
     finalstars=2;
     }
 
   else if (noOfMoves==20)
   {
-    let startwo = starrating[1];
+    let startwo = starrating.children[1];
     startwo.style.display="none";
     finalstars=1
   }
   return finalstars;
 }
 
+function reset()
+{
+  clearInterval(interval);//stop & reset the timer
+  time=0;
+  clicked=0;
+  minutes.textContent = "00"; //show in HTML
+  seconds.textContent = ":" + "00";
+  start();
+
+}
+
 function restart()
 {
-  restartbutton.addEventListener('click', start);
+
+  restartbutton.addEventListener('click', reset);
 }
 
 // Shuffle function from http://stackoverflow.com/a/2450976
