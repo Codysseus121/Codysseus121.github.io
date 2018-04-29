@@ -10,7 +10,6 @@ let movesCounter=document.querySelector('.moves');//the number of moves elements
 let noOfMoves=0;//moves count
 movesCounter.innerHTML=noOfMoves;
 let starrating = document.querySelector('.stars');//the stars element
-let allstars = starrating.querySelector('li');
 let restartbutton = document.querySelector('.restart');//the restart button
 let finalstars=3;
 let matchedmoves=0;
@@ -21,7 +20,7 @@ let seconds = document.getElementById("seconds");
 let now = 0, time=0, secs=0, mins=0, clocksecs=0;
 let modal = document.querySelector('.modal-content');//modal setup
 modal.style.display = 'none';
-let modalstatistics = document.querySelector('.statistics');
+let modalstatistics = document.getElementById('statistics');
 
 
 window.onload = function() //let the games begin!
@@ -141,7 +140,7 @@ function gameover() //the gameover function to stop the timer and show the modal
 {
   clearInterval(interval);//stop the timer
   modal.style.display="";//show the modal
-  statistics.textContent =
+  modalstatistics.textContent =
   "You completed the game in " + mins + " minutes," + " " + secs +" seconds" + " with " + finalstars + " stars left.";
   window.onclick = function(event) {
   if (event.target == modal) {
