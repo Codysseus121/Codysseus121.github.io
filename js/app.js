@@ -63,7 +63,6 @@ function start() //the core function of the game
   noOfMoves = 0;
   clicked = 0;
   matchedmoves = 0; //reset number of moves.
-  console.log("start "+matchedmoves);
   movesCounter.innerHTML = noOfMoves; //insert no of moves
   showstars();
   let newcards = shuffle(cards); // shuffle the cards
@@ -117,9 +116,7 @@ function match() //the card matching function
 {
   count=0;
   let temp1=matches.pop();
-  console.log(temp1);
   let temp2=matches.pop();
-  console.log(temp2);
   if (temp1.innerHTML != temp2.innerHTML)
   {
   setTimeout (function remove() {
@@ -131,8 +128,7 @@ function match() //the card matching function
     temp1.classList="card match";
     temp2.classList="card match";
     ++matchedmoves;//increment the number of matched pairs.
-    console.log("else "+matchedmoves);
-
+    
   }
 }
 
@@ -189,7 +185,6 @@ function reset() //a function to reset the timer and restart the game.
   clicked=0;
   matchedmoves=0;
   count = 0;
-  console.log("reset "+matchedmoves);
   noOfMoves = 0;
   matches = [];
   minutes.textContent = "00"; //show in HTML
