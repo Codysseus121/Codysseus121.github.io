@@ -59,10 +59,16 @@ function Ticking(value)//a function for formatting minutes & seconds
 function start() //the core function of the game
 {
 
-  modal.style.display = "none";//hide modal
+  clearInterval(interval);//stop & reset the timer
+  time=0;
+  clicked=0;
+  matchedmoves=0;
+  count = 0;
   noOfMoves = 0;
-  clicked = 0;
-  matchedmoves = 0; //reset number of moves.
+  matches = [];
+  minutes.textContent = "00"; //show in HTML
+  seconds.textContent = ":" + "00";
+  modal.style.display = "none";//hide modal
   movesCounter.innerHTML = noOfMoves; //insert no of moves
   showstars();
   let newcards = shuffle(cards); // shuffle the cards
@@ -121,14 +127,14 @@ function match() //the card matching function
   {
   setTimeout (function remove() {
   temp1.classList.remove("open", "show");
-  temp2.classList.remove("open", "show");}, 700);
+  temp2.classList.remove("open", "show");}, 500);
 }
   else
   {
     temp1.classList="card match";
     temp2.classList="card match";
     ++matchedmoves;//increment the number of matched pairs.
-    
+
   }
 }
 
@@ -141,6 +147,8 @@ gameover();
 function gameover() //the gameover function to stop the timer and show the modal.
 {
   clearInterval(interval);//stop the timer
+
+  setTimeout(function () {
   modal.style.display="";//show the modal
   modalstatistics.textContent =
   "You completed the game in " + mins + " minutes," + " " + secs +" seconds" + " with " + finalstars + " stars left.";
@@ -149,7 +157,9 @@ function gameover() //the gameover function to stop the timer and show the modal
     modal.style.display = 'none';
     reset();
       }
-};
+    }
+},500);
+
 }
 
 function showstars()
@@ -180,15 +190,7 @@ function stars() //a function to change the star rating after a number of moves.
 
 function reset() //a function to reset the timer and restart the game.
 {
-  clearInterval(interval);//stop & reset the timer
-  time=0;
-  clicked=0;
-  matchedmoves=0;
-  count = 0;
-  noOfMoves = 0;
-  matches = [];
-  minutes.textContent = "00"; //show in HTML
-  seconds.textContent = ":" + "00";
+
   start();
 
 }
