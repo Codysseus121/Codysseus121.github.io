@@ -104,7 +104,7 @@ function openCard(event) // a function to show the card once clicked.
   timer();
   let cardtemp=event;
   count++;//increment counter
-  if (cardtemp.classList!="card match" && cardtemp.classList!="card open show")//&& cardtemp.nodeName=="LI"the right elements are pushed onto the stack
+  if (cardtemp.classList!="card match" && cardtemp.classList!="card open show")//the right elements are pushed onto the stack
   {
   cardtemp.classList +=" open show";
   matches.push(cardtemp);//push first card onto the stack.
