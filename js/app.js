@@ -84,20 +84,27 @@ function start() //the core function of the game
 
   function clickcard() //event listener for click.
   {
-    deck.addEventListener('click', openCard);
+    deck.addEventListener('click', getClick);
 
   }
 
+function getClick(evt) // check that the user clicks a card and not the deck.
+{
+  let cardclass=evt.target;
+  if (cardclass.classList=="card")
+  openCard(cardclass);
+}
 
-function openCard(evt) // a function to show the card once clicked.
+
+function openCard(event) // a function to show the card once clicked.
 {
 
   clicked++;//this sets-off the timer on the first click
   if (clicked==1)
   timer();
-  let cardtemp=evt.target;
+  let cardtemp=event;
   count++;//increment counter
-  if (cardtemp.classList!="card match" && cardtemp.classList!="card open show" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
+  if (cardtemp.classList!="card match" && cardtemp.classList!="card open show")//&& cardtemp.nodeName=="LI"the right elements are pushed onto the stack
   {
   cardtemp.classList +=" open show";
   matches.push(cardtemp);//push first card onto the stack.
