@@ -4,7 +4,7 @@
 let card = document.getElementsByClassName('card'); //Creates an HTML Collection of the li elements.
 const cards = Array.from(card); //creates an array therefrom.
 let deck = document.querySelector('.deck'); //a variable holding the <ul> element.
-const matches = new Array(); //an array to hold all matches found.
+let matches = new Array(); //an array to hold all matches found.
 let count=0;//counting no of open unmatched cards.
 let movesCounter=document.querySelector('.moves');//the number of moves elements
 let noOfMoves=0;//moves count
@@ -31,7 +31,7 @@ window.onload = function() //let the games begin!
 
 function timer() //timer function
 {
-
+  now = new Date().getTime();//reset date-time object.
   interval= setInterval(function()
   {
   time = new Date().getTime() - now;//accurately calculate time in milliseconds.
@@ -60,9 +60,10 @@ function start() //the core function of the game
 {
 
   modal.style.display = "none";//hide modal
-  now = new Date().getTime();//reset date-time object.
   noOfMoves = 0;
+  clicked = 0;
   matchedmoves = 0; //reset number of moves.
+  console.log("start "+matchedmoves);
   movesCounter.innerHTML = noOfMoves; //insert no of moves
   showstars();
   let newcards = shuffle(cards); // shuffle the cards
@@ -85,15 +86,16 @@ function start() //the core function of the game
 
 function openCard(evt) // a function to show the card once clicked.
 {
+
   clicked++;//this sets-off the timer on the first click
   if (clicked==1)
   timer();
   let cardtemp=evt.target;
+  count++;//increment counter
   if (cardtemp.classList!="card match" && cardtemp.classList!="card open show" && cardtemp.nodeName=="LI")//the right elements are pushed onto the stack
   {
   cardtemp.classList +=" open show";
   matches.push(cardtemp);//push first card onto the stack.
-  count++;//increment counter
   if (count==2)//check to see if they match.
   {
   incrementMoves();
@@ -115,7 +117,9 @@ function match() //the card matching function
 {
   count=0;
   let temp1=matches.pop();
+  console.log(temp1);
   let temp2=matches.pop();
+  console.log(temp2);
   if (temp1.innerHTML != temp2.innerHTML)
   {
   setTimeout (function remove() {
@@ -127,7 +131,7 @@ function match() //the card matching function
     temp1.classList="card match";
     temp2.classList="card match";
     ++matchedmoves;//increment the number of matched pairs.
-
+    console.log("else "+matchedmoves);
 
   }
 }
@@ -184,7 +188,10 @@ function reset() //a function to reset the timer and restart the game.
   time=0;
   clicked=0;
   matchedmoves=0;
+  count = 0;
+  console.log("reset "+matchedmoves);
   noOfMoves = 0;
+  matches = [];
   minutes.textContent = "00"; //show in HTML
   seconds.textContent = ":" + "00";
   start();
