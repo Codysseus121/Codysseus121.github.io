@@ -1,5 +1,5 @@
 /*
- * Initialization of global variables
+ * Declaration of global variables
  */
 let card = document.getElementsByClassName('card'); //Creates an HTML Collection of the li elements.
 const cards = Array.from(card); //creates an array therefrom.
@@ -12,7 +12,7 @@ movesCounter.innerHTML=noOfMoves;
 let starrating = document.querySelector('.stars');//the stars element
 let restartbutton = document.querySelector('.restart');//the restart button
 let finalstars=3;
-let matchedmoves=0;
+let matchedmoves=0;//the number of succesfull matches
 let clicked=0;
 let interval;
 let minutes = document.getElementById("minutes");//timer variables
@@ -61,7 +61,8 @@ function start() //the core function of the game
 
   modal.style.display = "none";//hide modal
   now = new Date().getTime();//reset date-time object.
-  noOfMoves = 0; //reset number of moves.
+  noOfMoves = 0;
+  matchedmoves = 0; //reset number of moves.
   movesCounter.innerHTML = noOfMoves; //insert no of moves
   showstars();
   let newcards = shuffle(cards); // shuffle the cards
@@ -98,6 +99,7 @@ function openCard(evt) // a function to show the card once clicked.
   incrementMoves();
   match(); //check if it's a match.
   stars(); //check the star rating.
+  completed();//check if all cards have been matched.
   }
 }
 }
@@ -125,7 +127,7 @@ function match() //the card matching function
     temp1.classList="card match";
     temp2.classList="card match";
     ++matchedmoves;//increment the number of matched pairs.
-    completed();//check if all cards have been matched.
+
 
   }
 }
@@ -167,7 +169,7 @@ function stars() //a function to change the star rating after a number of moves.
     finalstars=2;
     }
 
-  else if (noOfMoves==20)
+  else if (noOfMoves>=20)
   {
     let startwo = starrating.children[1];
     startwo.style.visibility="hidden";
@@ -182,6 +184,7 @@ function reset() //a function to reset the timer and restart the game.
   time=0;
   clicked=0;
   matchedmoves=0;
+  noOfMoves = 0;
   minutes.textContent = "00"; //show in HTML
   seconds.textContent = ":" + "00";
   start();
