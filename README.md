@@ -20,4 +20,4 @@ Then, just click the boxes and match the cards. To restart, simply press the res
 
 ### Dependencies
 
-This project uses Google fonts and Bootstrap font-awesome. These are loaded automatically.
+This project uses Google fonts and Bootstrap font-awesome. These are loaded via CDN.
